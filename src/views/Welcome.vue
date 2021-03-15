@@ -4,7 +4,7 @@
 
     <div v-if="isShowingLogin">
       <h2>Login</h2>
-      <LoginForm />
+      <LoginForm @login="enterChat" />
       <p>
         No account yet? <span @click="toggleAuthMode">Sign up</span> instead
       </p>
@@ -12,7 +12,7 @@
 
     <div v-else>
       <h2>Sign up</h2>
-      <SignupForm />
+      <SignupForm @signup="enterChat" />
       <p>
         Already have an account?
         <span @click="toggleAuthMode">Login</span> instead
@@ -22,9 +22,10 @@
 </template>
 
 <script>
-import LoginForm from "../components/LoginForm.vue";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
+import LoginForm from "../components/LoginForm.vue";
 import SignupForm from "../components/SignupForm.vue";
 
 export default {
@@ -34,13 +35,18 @@ export default {
     SignupForm,
   },
   setup() {
+    const router = useRouter();
     const isShowingLogin = ref(true);
 
     function toggleAuthMode() {
       isShowingLogin.value = !isShowingLogin.value;
     }
 
-    return { isShowingLogin, toggleAuthMode };
+    function enterChat() {
+      router.push({ name: "Chatroom" });
+    }
+
+    return { isShowingLogin, toggleAuthMode, enterChat };
   },
 };
 </script>

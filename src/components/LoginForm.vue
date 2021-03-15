@@ -30,7 +30,8 @@ import useLogin from "../composables/useLogin";
 
 export default {
   name: "LoginForm",
-  setup() {
+  emits: ["login"],
+  setup(props, context) {
     const email = ref("");
     const password = ref("");
 
@@ -38,6 +39,10 @@ export default {
 
     async function handleSubmit() {
       await login(email.value, password.value);
+
+      if (!error.value) {
+        context.emit("login");
+      }
     }
 
     return { email, password, handleSubmit, error };
