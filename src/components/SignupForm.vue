@@ -27,12 +27,15 @@
       v-model="password"
     />
 
+    <div class="error">{{ error }}</div>
+
     <button>Sign Up</button>
   </form>
 </template>
 
 <script>
 import { ref } from "vue";
+import useSignup from "../composables/useSignup";
 
 export default {
   name: "SignupForm",
@@ -41,11 +44,13 @@ export default {
     const email = ref("");
     const password = ref("");
 
-    function handleSubmit() {
-      console.log(displayName.value, email.value, password.value);
+    const { error, signup } = useSignup()
+
+    async function handleSubmit() {
+      await signup(displayName.value, email.value, password.value)
     }
 
-    return { displayName, email, password, handleSubmit };
+    return { displayName, email, password, handleSubmit, error };
   },
 };
 </script>
