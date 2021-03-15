@@ -1,48 +1,82 @@
 <template>
   <div class="welcome container">
-    <h1>Welcome</h1>
-    <SignupForm />
+    <h1>Welcome to the live-chat app</h1>
+
+    <div v-if="isShowingLogin">
+      <h2>Login</h2>
+      <LoginForm />
+      <p>
+        No account yet? <span @click="toggleAuthMode">Sign up</span> instead
+      </p>
+    </div>
+
+    <div v-else>
+      <h2>Sign up</h2>
+      <SignupForm />
+      <p>
+        Already have an account?
+        <span @click="toggleAuthMode">Login</span> instead
+      </p>
+    </div>
   </div>
 </template>
 
 <script>
-import SignupForm from '../components/SignupForm.vue'
+import LoginForm from "../components/LoginForm.vue";
+import { ref } from "vue";
+
+import SignupForm from "../components/SignupForm.vue";
 
 export default {
   name: "Welcome",
-  components: { SignupForm }
+  components: {
+    LoginForm,
+    SignupForm,
+  },
+  setup() {
+    const isShowingLogin = ref(true);
+
+    function toggleAuthMode() {
+      isShowingLogin.value = !isShowingLogin.value;
+    }
+
+    return { isShowingLogin, toggleAuthMode };
+  },
 };
 </script>
 
 <style>
- .welcome {
-    text-align: center;
-    padding: 20px 0;
-  }
-  /* form styles */
-  .welcome form {
-    width: 300px;
-    margin: 20px auto;
-  }
-  .welcome label {
-    display: block;
-    margin: 20px 0 10px;
-  }
-  .welcome input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 20px;
-    border: 1px solid #eee;
-    outline: none;
-    color: #999;
-    margin: 10px auto;
-  }
-  .welcome span{
-    font-weight: bold;
-    text-decoration: underline;
-    cursor: pointer;
-  }
-  .welcome button {
-    margin: 20px auto;
-  }
+.welcome {
+  text-align: center;
+  padding: 24px 0;
+}
+.welcome h1 {
+  margin-bottom: 24px;
+}
+/* form styles */
+.welcome form {
+  width: 300px;
+  margin: 20px auto;
+}
+.welcome label {
+  display: block;
+  margin: 20px 0 10px;
+}
+.welcome input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid #eee;
+  outline: none;
+  color: #999;
+  margin: 10px auto;
+}
+.welcome span {
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.welcome button {
+  margin: 20px auto;
+}
 </style>
