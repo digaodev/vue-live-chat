@@ -25,7 +25,6 @@ async function signup(displayName, email, password) {
 }
 
 function useSignup() {
-
   return { error, signup }
 }
 
