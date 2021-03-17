@@ -9,6 +9,8 @@
 </template>
 
 <script>
+import { useRouter } from 'vue-router';
+
 import useLogout from "../composables/useLogout";
 import getUser from "../composables/getUser";
 
@@ -16,12 +18,13 @@ export default {
   setup() {
     const { logout, error } = useLogout();
     const { user } = getUser();
+    const router = useRouter()
 
     const handleLogout = async () => {
       await logout();
 
       if (!error.value) {
-        console.log("logged out");
+        router.push({name: 'Welcome'})
       }
     };
     
@@ -32,16 +35,18 @@ export default {
 
 <style>
 nav {
-  padding: 20px;
-  border-bottom: 1px solid #eee;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid #eee;
+  padding: 20px;
 }
 nav p {
-  margin: 2px auto;
-  font-size: 16px;
   color: #444;
+  font-size: 16px;
+  margin: 2px auto;
+  text-align: left;
 }
 nav p.email {
   font-size: 14px;
