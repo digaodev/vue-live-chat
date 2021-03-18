@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 
 import { db } from '../services/firebase'
 
@@ -8,7 +8,7 @@ function getCollection(collectionName) {
 
   let collectionRef = db.collection(collectionName).orderBy('createdAt')
 
-  collectionRef.onSnapshot(snap => {
+  const unsubscribeSnapshot = collectionRef.onSnapshot(snap => {
     let results = []
 
     snap.docs.forEach(doc => {
@@ -21,6 +21,11 @@ function getCollection(collectionName) {
     console.log(err.message)
     documents.value = null
     error.value = 'Oops! Could not fetch any data'
+  })
+
+  watchEffect((onInvalidate) => {
+    // unsubscribe from snapshot when component unmounts
+    onInvalidate(() => unsubscribeSnapshot())
   })
 
   return { error, documents }
