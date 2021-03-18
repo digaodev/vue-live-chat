@@ -13,11 +13,20 @@ function requireAuth(to, from, next) {
   return next()
 }
 
+function requireNoAuth(to, from, next) {
+  const loggedUser = auth.currentUser
+
+  if (loggedUser) return next({ name: 'Chatroom' })
+
+  return next()
+}
+
 const routes = [
   {
     path: "/",
     name: "Welcome",
-    component: Welcome
+    component: Welcome,
+    beforeEnter: requireNoAuth
   },
   {
     path: "/chatroom",
